@@ -1,12 +1,13 @@
 const crypto = require("crypto");
 
+const { sanitizeObject } = require("../src/utils");
+
 jest.mock("twitter");
 
 const resultMock = require("../__mocks__/resultMock");
 const source = require("../src/gatsby-node").sourceNodes;
 
 const mockGatsbyApi = () => {
-
   const GatsbyApi = {
     boundActionCreators: {
       nodeObjects: [],
@@ -16,14 +17,14 @@ const mockGatsbyApi = () => {
     }
   };
 
-  GatsbyApi.boundActionCreators.createNode = GatsbyApi.boundActionCreators.createNode.bind(GatsbyApi.boundActionCreators);
+  GatsbyApi.boundActionCreators.createNode = GatsbyApi.boundActionCreators.createNode.bind(
+    GatsbyApi.boundActionCreators
+  );
 
   return GatsbyApi;
 };
 
 test("Should return a promise", () => {
-  // console.log(source())
-
   return source(mockGatsbyApi(), {});
 });
 
@@ -41,17 +42,17 @@ test("Should create a node", () => {
   }).then(() => {
     expect(mock.boundActionCreators.nodeObjects.length).toBe(4);
 
-    expect(mock.boundActionCreators.nodeObjects[0]).toEqual({
-      id: '250075927172759552',
+    expect(mock.boundActionCreators.nodeObjects[0]).toEqual(Object.assign({}, sanitizeObject(item),{
+      id: "250075927172759552",
       children: [],
+      parent: null,
       internal: {
         type: `tweet`,
-        content: JSON.stringify(item),
         contentDigest: crypto
           .createHash(`md5`)
           .update(JSON.stringify(item))
           .digest(`hex`)
       }
-    });
+    }));
   });
 });

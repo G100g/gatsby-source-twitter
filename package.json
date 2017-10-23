@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "Fetch data from Twitter API",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/G100g/gatsby-source-twitter"
+  },
   "scripts": {
     "build": "babel src --out-dir . --ignore __tests__",
     "watch": "babel -w src --out-dir . --ignore __tests__",
     "prepublish": "cross-env NODE_ENV=production npm run build",
     "test": "jest"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["gatsby", "gatsbyjs", "twitter"],
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
