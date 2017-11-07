@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-twitter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Fetch data from Twitter API",
   "main": "index.js",
   "repository": {
@@ -13,7 +13,11 @@
     "prepublish": "cross-env NODE_ENV=production npm run build",
     "test": "jest"
   },
-  "keywords": ["gatsby", "gatsbyjs", "twitter"],
+  "keywords": [
+    "gatsby",
+    "gatsbyjs",
+    "twitter"
+  ],
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -22,6 +26,7 @@
     "mockery": "^2.1.0"
   },
   "dependencies": {
+    "graphql": "^0.10.3",
     "twitter": "^1.7.1"
   }
 }

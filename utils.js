@@ -1,7 +1,10 @@
+const crypto = require("crypto");
+
 function sanitizeObject(obj) {
-  if (!obj) return obj;
+  if (!obj) return "";
+
   Object.keys(obj).forEach(key => {
-    if (obj[key] === null) {
+    if (obj[key] === null || obj[key] === undefined) {
       obj[key] = ``;
     } else if (key === "id") {
       obj[key] = `${obj[key]}`;
@@ -16,6 +19,11 @@ function sanitizeObject(obj) {
   return obj;
 }
 
+function md5(str) {
+  return crypto.createHash(`md5`).update(str).digest(`hex`);
+}
+
 module.exports = {
-  sanitizeObject
+  sanitizeObject,
+  md5
 };

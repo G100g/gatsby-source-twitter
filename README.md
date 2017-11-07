@@ -15,7 +15,8 @@ module.exports = {
                 consumer_key: "INSERT_HERE_YOUR_CONSUMER_KEY",
                 consumer_secret: "INSERT_HERE_YOUR_CONSUMER_SECRETE",
                 bearer_token: "INSERT_HERE_YOUR_BEARER_TOKEN"
-            }
+            },
+            tweet_mode: 'extended'
         }
     }
   ],
@@ -27,6 +28,7 @@ module.exports = {
 * **q**: A search query. Reference to [Twitter Search Tweets API](https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets)
 * **count**: Number of tweet *(default 100)*
 * **credential**: You have to create an [App on Twitter](https://apps.twitter.com/) and creating a bearer token following this [instructions](https://developer.twitter.com/en/docs/basics/authentication/api-reference/token) using your consumer key and consumer secret
+* **tweet_mode**: Define how tweets are rendered. Possible values ```compat``` or ```extended``` (default: ```compat```) [More Details](https://developer.twitter.com/en/docs/tweets/tweet-updates#consumption)
 
 ## How to query your Tweets data using GraphQL
 
@@ -47,3 +49,5 @@ query PageQuery {
     }
 }
 ```
+
+> **Warning**: ```id``` field is not the tweet id, but Gatbsy internal node id. Use ```id_str``` if you need to use the tweet id

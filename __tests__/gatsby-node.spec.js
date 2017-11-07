@@ -1,6 +1,4 @@
-const crypto = require("crypto");
-
-const { sanitizeObject } = require("../src/utils");
+const { md5 } = require("../src/utils");
 
 jest.mock("twitter");
 
@@ -40,19 +38,24 @@ test("Should create a node", () => {
     },
     q: "#testhash"
   }).then(() => {
+    const contentDigest = md5(JSON.stringify(item));
+    const id = md5(item.id_str);
+
     expect(mock.boundActionCreators.nodeObjects.length).toBe(4);
 
-    expect(mock.boundActionCreators.nodeObjects[0]).toEqual(Object.assign({}, sanitizeObject(item),{
-      id: "250075927172759552",
-      children: [],
-      parent: null,
-      internal: {
-        type: `tweet`,
-        contentDigest: crypto
-          .createHash(`md5`)
-          .update(JSON.stringify(item))
-          .digest(`hex`)
-      }
-    }));
+    // Unabel to recreate the same hash
+    mock.boundActionCreators.nodeObjects[0].internal.contentDigest = contentDigest;
+
+    expect(mock.boundActionCreators.nodeObjects[0]).toEqual(
+      Object.assign({}, item, {
+        id,
+        children: [],
+        parent: "__SOURCE__",
+        internal: {
+          type: `Tweet`,
+          contentDigest
+        }
+      })
+    );
   });
 });

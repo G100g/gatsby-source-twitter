@@ -1,37 +1,50 @@
-const crypto = require("crypto");
 const Twitter = require("twitter");
 
-const { sanitizeObject } = require("./utils");
+const fs = require("fs");
+
+const { md5 } = require("./utils");
+
+const { twitterType } = require("./schema");
 
 function generateNode(tweet) {
-  const contentDigest = crypto.createHash(`md5`).update(JSON.stringify(tweet)).digest(`hex`);
+  const contentDigest = md5(JSON.stringify(tweet));
+  const id = md5(tweet.id_str);
 
-  // GraphQL doesn't love twitter ids
-  tweet = sanitizeObject(tweet);
-  const nodeData = Object.assign(tweet, {
-    id: `${tweet.id_str}`,
+  const nodeData = {
+    id: id,
     children: [],
-    parent: null,
+    parent: `__SOURCE__`,
     internal: {
-      type: `tweet`,
+      type: `Tweet`,
       contentDigest
     }
-  });
+  };
 
-  return nodeData;
+  const node = Object.assign({}, tweet, nodeData);
+
+  return node;
 }
 
-exports.sourceNodes = ({ boundActionCreators }, { q, credentials, count = 100 }) => {
+exports.sourceNodes = ({ boundActionCreators }, { q, credentials, count = 100, tweet_mode = "compat" }) => {
   const { createNode } = boundActionCreators;
 
   var client = new Twitter(credentials);
 
   return client.get("search/tweets", {
     q,
-    count
+    count,
+    include_entities: true,
+    tweet_mode
   }).then(results => {
     results.statuses.forEach(tweet => {
       createNode(generateNode(tweet));
     });
   });
+};
+
+exports.setFieldsOnGraphQLNodeType = ({ type }) => {
+  if (type.name !== `Tweet`) {
+    return {};
+  }
+  return twitterType;
 };
