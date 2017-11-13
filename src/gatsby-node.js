@@ -20,6 +20,13 @@ function generateNode(tweet) {
     }
   };
 
+  // Removing place.bounding_box duo coordinates GraphQL issue
+  // Help wantend!
+  if (tweet && tweet.place && tweet.place.bounding_box) {
+    delete tweet.place.bounding_box;
+    tweet.place.bounding_box = null;
+  }
+
   const node = Object.assign({}, tweet, nodeData);
 
   return node;
@@ -41,6 +48,12 @@ exports.sourceNodes = (
       tweet_mode
     })
     .then(results => {
+      
+      // TODO: ADD DEBUG MODE
+      // fs.writeFileSync("./tweets.json", JSON.stringify(results, null, 4), {
+      //   encoding: "utf8"
+      // });
+
       results.statuses.forEach(tweet => {
         createNode(generateNode(tweet));
       });

@@ -12,6 +12,8 @@ const {
 
 const IndiceType = new GraphQLList(GraphQLInt);
 const AspectRatioType = new GraphQLList(GraphQLInt);
+const CoordinatesType = new GraphQLList(GraphQLFloat);
+
 
 const EntityType = new GraphQLObjectType({
   name: "Entity",
@@ -197,6 +199,38 @@ const UserType = new GraphQLObjectType({
   }
 });
 
+const BoundingBoxType = new GraphQLObjectType({
+  name: "BoundingBox",
+  fields: {
+    type: { type: GraphQLString },
+    coordinates: {
+      type: new GraphQLList(new GraphQLList(CoordinatesType))
+    }
+  }
+})  
+ 
+//     // [
+//     //     [
+//     //         [
+//     //             2.2241006,
+//     //             48.8155214
+//     //         ],
+//     //         [
+//     //             2.4699053,
+//     //             48.8155214
+//     //         ],
+//     //         [
+//     //             2.4699053,
+//     //             48.9021461
+//     //         ],
+//     //         [
+//     //             2.2241006,
+//     //             48.9021461
+//     //         ]
+//     //     ]
+//     // ]
+//   }
+
 exports.twitterType = {
   // created_at: {
   //   type: GraphQLString
@@ -255,16 +289,37 @@ exports.twitterType = {
   // },
   user: {
     type: UserType
-  }
+  },
   // geo: {
   //   type: GraphQLString
   // },
   // coordinates: {
   //   type: GraphQLString
   // },
-  // place: {
-  //   type: GraphQLString
-  // },
+  place: {
+    type: new GraphQLObjectType({
+      name: "TweetPlace",
+      fields: {
+        id: { type: GraphQLString },
+        url: { type: GraphQLString },
+        place_type: { type: GraphQLString },
+        name: { type: GraphQLString },
+        full_name: { type: GraphQLString },
+        country_code: { type: GraphQLString },
+        country: { type: GraphQLString },
+        // contained_within: new GraphQLList(),      
+        // bounding_box: {
+        //   type: BoundingBoxType
+        // },
+        // attributes: { type: new GraphQLObjectType({
+        //   name: "TweetPlaceattributes",
+        //   fields: {
+        //     geotagCount: { type: GraphQLInt },
+        //   }
+        // })}
+      }
+    })
+  },
   // is_quote_status: {
   //   type: GraphQLString
   // },
