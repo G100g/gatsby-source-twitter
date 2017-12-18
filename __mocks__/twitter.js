@@ -8,10 +8,6 @@ const twitter = jest.genMockFromModule("twitter");
 // twitter.get = () => { return Promise.resolve(resultMock); }
 
 const Twitter = function() {
-
-    
-
-
 };
 
 Twitter.prototype = {
