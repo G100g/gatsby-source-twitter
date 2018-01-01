@@ -41,7 +41,8 @@ exports.sourceNodes = (
     count = 100,
     tweet_mode = "compat",
     result_type = "mixed",
-    fetchAllResults = false
+    fetchAllResults = false,
+    debug = false
   }
 ) => {
   const { createNode } = boundActionCreators;
@@ -72,6 +73,9 @@ exports.sourceNodes = (
           results.search_metadata.next_results.substr(1)
         );
 
+        params.tweet_mode = tweet_mode;
+        params.result_type = result_type;
+
         results = yield client.get("search/tweets", params);
 
         createNodes(results.statuses);
@@ -79,6 +83,13 @@ exports.sourceNodes = (
     }
   });
 };
+
+function saveResult(results, index = 0) {
+  // TODO: ADD DEBUG MODE
+      fs.writeFileSync(`./tweets-${index}.json`, JSON.stringify(results, null, 4), {
+        encoding: "utf8"
+      });
+}
 
 exports.setFieldsOnGraphQLNodeType = ({ type }) => {
   if (type.name !== `Tweet`) {
