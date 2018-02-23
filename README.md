@@ -31,7 +31,6 @@ module.exports = {
 * **tweet_mode**: Define how tweets are rendered. Possible values ```compat``` or ```extended``` (default: ```compat```) [More Details]
 (https://developer.twitter.com/en/docs/tweets/tweet-updates#consumption)
 * **result_type**: Default ```mixed```, could be ```mixed```, ```recent``` or ```popular```
-ca903f5a5eeff3c947f8bcb93376dab433b7a7aff5fc96dc79372e70a5e1dc3b24cdc084f0fc69cdcf379591256941bbafe24cb6db0c463c613230a91e6fc72739c7a51cd4cb030590f0b4f4679cbd96c42550e50641fecae2d8708e21fefcb0a3db0c1642ffe5b70e14fca9d40c90a110c67844d80d3300d9950f3a72e591d91dd23f02c8a7f3e5579c464ef85006de9cd2bbdb3ac60782ca5fac233dd41df3
 * **fetchAllResults**: Fetch all pages result
 
 ## How to query your Tweets data using GraphQL
