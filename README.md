@@ -42,7 +42,7 @@ query PageQuery {
         edges {
             node {
                 created_at
-                text
+                full_text
                 user {
                     name
                 }
