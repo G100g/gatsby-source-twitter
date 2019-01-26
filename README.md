@@ -13,7 +13,7 @@ module.exports = {
             q: `@wesbos`,    
             credentials: {
                 consumer_key: "INSERT_HERE_YOUR_CONSUMER_KEY",
-                consumer_secret: "INSERT_HERE_YOUR_CONSUMER_SECRETE",
+                consumer_secret: "INSERT_HERE_YOUR_CONSUMER_SECRET",
                 bearer_token: "INSERT_HERE_YOUR_BEARER_TOKEN"
             },
             tweet_mode: 'extended'
@@ -34,7 +34,7 @@ module.exports = {
 
 ## How to query your Tweets data using GraphQL
 
-Below is a sample query for fetching all Tweets nodes. 
+Below is a sample query for fetching all Tweets nodes.
 
 ```graphql
 query PageQuery {
