@@ -1,0 +1,10 @@
+*.min.js
+**/node_modules/**
+
+# fixtures
+**/__testfixtures__/**
+**/__tests__/fixtures/**
+
+# coverage
+coverage
+
