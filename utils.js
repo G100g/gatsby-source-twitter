@@ -31,9 +31,10 @@ function camelCase(txt) {
 
 const logNamespace = `\x1b[36mtwitter\x1b[0m`;
 const debugNamespace = `\x1b[33mtwitter\x1b[0m`;
+const errorNamespace = `\x1b[31mtwitter\x1b[0m`;
 
 function log(msg, namespace = logNamespace) {
-  console.log(`\n${namespace} ${msg}`);
+  console.log(`${namespace} ${msg}`);
 }
 
 function logDebug(msg) {
@@ -42,10 +43,15 @@ function logDebug(msg) {
   }
 }
 
+function logError(msg) {
+  log(msg, errorNamespace);
+}
+
 module.exports = {
   sanitizeObject,
   md5,
   log,
   logDebug,
+  logError,
   camelCase
 };

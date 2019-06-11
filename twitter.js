@@ -2,24 +2,48 @@
 
 const {
   log,
-  logDebug
+  logDebug,
+  logError
 } = require(`./utils`);
 
 const querystring = require(`querystring`);
 
-module.exports = async (client, {
-  endpoint,
+const defaultHandle = async function (client, endpoint, {
+  params
+}) {
+  try {
+    const results = await client.get(endpoint, params); // console.log(endpoint, results)
+
+    return results.length ? results : [results];
+  } catch (e) {
+    logError(`Error from "${endpoint}" - ${e.message}`);
+    console.error(e);
+  }
+
+  return []; // return false
+};
+
+const searchHandle = async function (client, endpoint, {
   fetchAllResults = false,
-  ...params
-}) => {
+  params
+}) {
   const results = [];
-  log(`Fetching Twitter content...`);
+  let queryParams = { ...params
+  };
   let fetchNextResults = true;
-  let queryParams = params;
 
   while (fetchNextResults) {
-    logDebug(JSON.stringify(queryParams, null, 2));
-    let lastResults = await client.get(endpoint, queryParams);
+    logDebug(JSON.stringify({
+      endpoint,
+      ...queryParams
+    }, null, 2));
+    let lastResults;
+
+    try {
+      lastResults = await client.get(endpoint, queryParams);
+    } catch (e) {
+      logError(`Fetch error ${endpoint}: ${e.message}`);
+    }
 
     if (lastResults && lastResults.statuses) {
       results.push(...lastResults.statuses);
@@ -34,5 +58,30 @@ module.exports = async (client, {
     }
   }
 
+  return results;
+};
+
+const handles = {
+  "favorites/list": defaultHandle,
+  "statuses/show": defaultHandle,
+  "statuses/lookup": defaultHandle,
+  "statuses/oembed": defaultHandle,
+  "statuses/user_timeline": defaultHandle,
+  "search/tweets": searchHandle,
+  default: (client, endpoint) => {
+    log(`${endpoint} endpoint is not supported`);
+    return [];
+  }
+};
+
+const getHandle = endpoint => handles[endpoint] || handles.default;
+
+module.exports = async (client, {
+  endpoint,
+  ...options
+}) => {
+  log(`Fetching Twitter ${endpoint} content...`);
+  const handle = getHandle(endpoint);
+  const results = await handle(client, endpoint, options);
   return results;
 };

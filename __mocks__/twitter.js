@@ -1,4 +1,3 @@
-const resultMock = require(`./resultMock`)
 // const twitter = jest.genMockFromModule(`twitter`)
 
 // let resultMock = {}
@@ -7,10 +6,36 @@ const resultMock = require(`./resultMock`)
 // };
 // twitter.get = () => { return Promise.resolve(resultMock); }
 
-const Twitter = function() {}
+const searchResultMock = require(`./search-result-mock`)
 
-Twitter.prototype = {
-  get() {
+const Twitter = function() {
+  this.id = new Date().getTime()
+}
+
+const handles = {
+  "favorites/list": function() {
+    const resultMock = require(`./favorite-result-mock`)
+    return resultMock
+  },
+  "statuses/show": function() {
+    const resultMock = require(`./single-result-mock`)
+    return resultMock
+  },
+  "statuses/oembed": function() {
+    const resultMock = require(`./oembed-result-mock`)
+    return resultMock
+  },
+  "statuses/lookup": function() {
+    const resultMock = require(`./lookup-result-mock`)
+    return resultMock
+  },
+  "statuses/user_timeline": function() {
+    const resultMock = require(`./timeline-result-mock`)
+    return resultMock
+  },
+  "search/tweets": function() {
+    const resultMock = { ...searchResultMock }
+
     resultMock.search_metadata = {
       ...resultMock.search_metadata,
       count: this.__counterPageResults,
@@ -18,28 +43,29 @@ Twitter.prototype = {
 
     if (this.__counterPageResults === this.numberOfPageResult - 1) {
       delete resultMock.search_metadata.next_results
-      /*
-          search_metadata: {
-        max_id: 250126199840518145,
-        since_id: 24012619984051000,
-        refresh_url: `?since_id=250126199840518145&q=%23freebandnames&result_type=mixed&include_entities=1`,
-        next_results: `?max_id=249279667666817023&q=%23freebandnames&count=4&include_entities=1&result_type=mixed`,
-        count: 4,
-        completed_in: 0.035,
-        since_id_str: `24012619984051000`,
-        query: `%23freebandnames`,
-        max_id_str: `250126199840518145`,
-      },
-      */
     }
 
     this.__counterPageResults++
+    return resultMock
+  },
+}
 
-    return Promise.resolve(resultMock)
+const getHandle = (endpoint, client) => handles[endpoint].bind(client) || false
+
+Twitter.prototype = {
+  get(endpoint, params) {
+    this.__params = params
+    const mockHandle = getHandle(endpoint, this)
+    if (mockHandle) {
+      return Promise.resolve(mockHandle())
+    } else {
+      return Promise.resolve([])
+    }
   },
 
-  numberOfPageResult: 1,
+  __params: {},
   __counterPageResults: 0,
+  numberOfPageResult: 1,
 }
 
 module.exports = Twitter

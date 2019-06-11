@@ -2,14 +2,9 @@ const { md5 } = require(`../src/utils`)
 
 jest.mock(`twitter`)
 
-const resultMock = require(`../__mocks__/resultMock`)
+const resultMock = require(`../__mocks__/search-result-mock`)
 
-const {
-  sourceNodes: source,
-  setFieldsOnGraphQLNodeType,
-} = require(`../src/gatsby-node`)
-
-const { twitterType } = require(`../src/schema`)
+const { sourceNodes: source } = require(`../src/gatsby-node`)
 
 const mockGatsbyApi = () => {
   const GatsbyApi = {
@@ -28,11 +23,6 @@ const mockGatsbyApi = () => {
 
   return GatsbyApi
 }
-
-const mockSetFieldsOnGraphQLNodeType = name => setFieldsOnGraphQLNodeType =>
-  setFieldsOnGraphQLNodeType({
-    type: { name },
-  })
 
 describe(`Source`, () => {
   test(`Should return a promise`, () => source(mockGatsbyApi(), {}))
@@ -76,35 +66,5 @@ describe(`Source`, () => {
         })
       )
     })
-  })
-
-  test.each([
-    [
-      `otherType`,
-      mockSetFieldsOnGraphQLNodeType(`otherType`)(setFieldsOnGraphQLNodeType),
-      {},
-    ],
-    [
-      `twitterTest`,
-      mockSetFieldsOnGraphQLNodeType(`twitterTest`)(setFieldsOnGraphQLNodeType),
-      twitterType,
-    ],
-    [
-      `twitterFoo`,
-      mockSetFieldsOnGraphQLNodeType(`twitterFoo`)(setFieldsOnGraphQLNodeType),
-      twitterType,
-    ],
-    [
-      `twitterzoo`,
-      mockSetFieldsOnGraphQLNodeType(`twitterzoo`)(setFieldsOnGraphQLNodeType),
-      twitterType,
-    ],
-    [
-      `twitter`,
-      mockSetFieldsOnGraphQLNodeType(`twitter`)(setFieldsOnGraphQLNodeType),
-      twitterType,
-    ],
-  ])(`Should return twitterType %s`, (nodeType, result, expected) => {
-    expect(result).toEqual(expected)
   })
 })

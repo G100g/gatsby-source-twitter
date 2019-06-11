@@ -12,14 +12,10 @@ const {
   camelCase
 } = require(`./utils`);
 
-const {
-  twitterType
-} = require(`./schema`);
-
-const DEBUG = !!process.env.DEBUG;
+const DEBUG = process.env.DEBUG === `true`;
 
 function generateNode(tweet, contentDigest, type) {
-  const id = md5(tweet.id_str);
+  const id = md5(tweet.id_str || tweet.toString());
   const nodeData = {
     id: id,
     children: [],
@@ -46,12 +42,7 @@ exports.sourceNodes = async ({
   createContentDigest
 }, {
   queries,
-  credentials,
-  // count = 100,
-  // tweet_mode = "compat",
-  // result_type = "mixed",
-  fetchAllResults = false,
-  debug = false
+  credentials
 }) => {
   const {
     createNode
@@ -78,12 +69,16 @@ exports.sourceNodes = async ({
         results
       } = await queryResults;
       const nodeType = camelCase(`twitter ${queryName}`);
-      log(`Creating Twitter nodes ${nodeType} ...`); // results.forEach((result, index) => {
-
-      createNodes(results, nodeType);
 
       if (DEBUG === true) {
-        saveResult(results);
+        saveResult(queryName, results);
+      }
+
+      if (results.length) {
+        log(`Creating Twitter nodes ${nodeType} ...`);
+        createNodes(results, nodeType);
+      } else {
+        log(`No twitter results`);
       }
     }));
   } else {
@@ -93,20 +88,14 @@ exports.sourceNodes = async ({
   return Promise.resolve();
 };
 
-function saveResult(results, index = 0) {
-  fs.writeFileSync(`./tweets-${index}.json`, JSON.stringify(results, null, 4), {
+function saveResult(queryName, results) {
+  fs.writeFileSync(`./tweets-${queryName}.json`, JSON.stringify(results, null, 4), {
     encoding: `utf8`
   });
-}
-
-const isTweetType = /^twitter/;
-
-exports.setFieldsOnGraphQLNodeType = ({
-  type
-}) => {
-  if (!isTweetType.test(type.name)) {
-    return {};
-  }
-
-  return twitterType;
-};
+} // const isTweetType = /^twitter/
+// exports.setFieldsOnGraphQLNodeType = ({ type }) => {
+//   if (!isTweetType.test(type.name)) {
+//     return {}
+//   }
+//   return twitterType
+// }
