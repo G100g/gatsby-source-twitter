@@ -10,6 +10,8 @@ const favoriteResultMock = require(`../__mocks__/favorite-result-mock`)
 const singleResultMock = require(`../__mocks__/single-result-mock`)
 const oembedResultMock = require(`../__mocks__/oembed-result-mock`)
 
+const reporter = require(`../__mocks__/reporter`)
+
 describe.only(`Twitter`, () => {
   test(`Should use params`, async () => {
     const options = {
@@ -21,7 +23,7 @@ describe.only(`Twitter`, () => {
     }
     var mockClient = new Twitter()
 
-    await getTweet(mockClient, options)
+    await getTweet(mockClient, options, reporter)
 
     expect(mockClient.__params).toMatchObject(options.params)
   })
@@ -35,7 +37,7 @@ describe.only(`Twitter`, () => {
     }
     var mockClient = new Twitter()
 
-    const tweets = await getTweet(mockClient, options)
+    const tweets = await getTweet(mockClient, options, reporter)
 
     expect(tweets).toHaveLength(4)
 
@@ -57,7 +59,7 @@ describe.only(`Twitter`, () => {
 
     mockClient.numberOfPageResult = 2
 
-    const tweets = await getTweet(mockClient, options)
+    const tweets = await getTweet(mockClient, options, reporter)
 
     expect(tweets).toHaveLength(8)
 
@@ -81,7 +83,7 @@ describe.only(`Twitter`, () => {
     }
     var mockClient = new Twitter()
 
-    const tweets = await getTweet(mockClient, options)
+    const tweets = await getTweet(mockClient, options, reporter)
 
     expect(tweets).toHaveLength(1)
 
@@ -98,7 +100,7 @@ describe.only(`Twitter`, () => {
     }
     var mockClient = new Twitter()
 
-    const tweets = await getTweet(mockClient, options)
+    const tweets = await getTweet(mockClient, options, reporter)
 
     expect(tweets).toHaveLength(2)
 
@@ -116,7 +118,7 @@ describe.only(`Twitter`, () => {
     }
     var mockClient = new Twitter()
 
-    const tweets = await getTweet(mockClient, options)
+    const tweets = await getTweet(mockClient, options, reporter)
 
     expect(tweets).toHaveLength(2)
 
@@ -134,7 +136,7 @@ describe.only(`Twitter`, () => {
     }
     var mockClient = new Twitter()
 
-    const tweets = await getTweet(mockClient, options)
+    const tweets = await getTweet(mockClient, options, reporter)
 
     expect(tweets).toHaveLength(1)
 
@@ -151,7 +153,7 @@ describe.only(`Twitter`, () => {
     }
     var mockClient = new Twitter()
 
-    const tweets = await getTweet(mockClient, options)
+    const tweets = await getTweet(mockClient, options, reporter)
 
     expect(tweets).toHaveLength(1)
 

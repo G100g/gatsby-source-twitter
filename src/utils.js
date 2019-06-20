@@ -28,6 +28,7 @@ function md5(str) {
 
 function camelCase(txt) {
   return txt
+    .replace(/([^A-Z0-9]+)/gi, ` `)
     .replace(/\s(.)/g, function($1) {
       return $1.toUpperCase()
     })

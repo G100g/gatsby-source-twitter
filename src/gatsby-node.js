@@ -1,8 +1,12 @@
 const Twitter = require(`twitter`)
-const fs = require(`fs`)
 
 const getTweet = require(`./twitter`)
-const { md5, log, camelCase } = require(`./utils`)
+const { md5, camelCase } = require(`./utils`)
+const { saveResult } = require(`./debug`)
+
+// const { twitterType } = require(`./schema`)
+
+const nodeTypes = []
 
 const DEBUG = process.env.DEBUG === `true`
 
@@ -31,7 +35,7 @@ function generateNode(tweet, contentDigest, type) {
 }
 
 exports.sourceNodes = async (
-  { boundActionCreators, createContentDigest },
+  { boundActionCreators, createContentDigest, reporter },
   { queries, credentials }
 ) => {
   const { createNode } = boundActionCreators
@@ -42,6 +46,21 @@ exports.sourceNodes = async (
     })
   }
 
+  // function createEmptyTypes(nodeType) {
+  //   reporter.warn(`Create empty type ${nodeType}`)
+  //   const typeDefs = `
+  //             type ${nodeType} implements Node {
+  //               id: String
+  //             }
+
+  //             type ${nodeType} implements Node {
+  //               id: String
+  //             }
+  //           `
+
+  //   createTypes(typeDefs)
+  // }
+
   // Fetch data for current API call
   if (queries) {
     var client = new Twitter(credentials)
@@ -49,44 +68,41 @@ exports.sourceNodes = async (
     return Promise.all(
       Object.keys(queries)
         .map(async queryName => {
-          const results = await getTweet(client, queries[queryName])
+          const nodeType = camelCase(
+            `twitter ${queries[queryName].endpoint} ${queryName}`
+          )
+          const results = await getTweet(client, queries[queryName], reporter)
+
+          nodeTypes.push(nodeType)
           return {
             queryName,
+            nodeType,
             results,
           }
         })
         .map(async queryResults => {
-          const { queryName, results } = await queryResults
-          const nodeType = camelCase(`twitter ${queryName}`)
+          const { queryName, results, nodeType } = await queryResults
 
           if (DEBUG === true) {
             saveResult(queryName, results)
           }
 
           if (results.length) {
-            log(`Creating Twitter nodes ${nodeType} ...`)
-
+            reporter.info(`Creating Twitter nodes ${nodeType} ...`)
             createNodes(results, nodeType)
           } else {
-            log(`No twitter results`)
+            reporter.warn(`No twitter results from ${queryName}`)
+
+            // Create type for empty results
+            // createEmptyTypes(nodeType)
           }
         })
     )
   } else {
-    log(`No Twitter query found. Please check your configuration`)
+    reporter.warn(`No Twitter query found. Please check your configuration`)
   }
 
   return Promise.resolve()
-}
-
-function saveResult(queryName, results) {
-  fs.writeFileSync(
-    `./tweets-${queryName}.json`,
-    JSON.stringify(results, null, 4),
-    {
-      encoding: `utf8`,
-    }
-  )
 }
 
 // const isTweetType = /^twitter/

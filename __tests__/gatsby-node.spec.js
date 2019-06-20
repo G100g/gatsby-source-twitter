@@ -3,11 +3,13 @@ const { md5 } = require(`../src/utils`)
 jest.mock(`twitter`)
 
 const resultMock = require(`../__mocks__/search-result-mock`)
+const reporter = require(`../__mocks__/reporter`)
 
 const { sourceNodes: source } = require(`../src/gatsby-node`)
 
 const mockGatsbyApi = () => {
   const GatsbyApi = {
+    reporter,
     boundActionCreators: {
       nodeObjects: [],
       createNode(nodeObject) {
@@ -60,7 +62,7 @@ describe(`Source`, () => {
           children: [],
           parent: `__SOURCE__`,
           internal: {
-            type: `twitterTestHash`,
+            type: `twitterSearchTweetsTestHash`,
             contentDigest,
           },
         })

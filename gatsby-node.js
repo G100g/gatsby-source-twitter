@@ -8,10 +8,14 @@ const getTweet = require(`./twitter`);
 
 const {
   md5,
-  log,
   camelCase
 } = require(`./utils`);
 
+const {
+  twitterType
+} = require(`./schema`);
+
+const nodeTypes = [];
 const DEBUG = process.env.DEBUG === `true`;
 
 function generateNode(tweet, contentDigest, type) {
@@ -39,7 +43,9 @@ function generateNode(tweet, contentDigest, type) {
 
 exports.sourceNodes = async ({
   boundActionCreators,
-  createContentDigest
+  createContentDigest,
+  actions,
+  reporter
 }, {
   queries,
   credentials
@@ -47,42 +53,63 @@ exports.sourceNodes = async ({
   const {
     createNode
   } = boundActionCreators;
+  const {
+    createTypes
+  } = actions;
 
   function createNodes(tweets, nodeType) {
     tweets.forEach(tweet => {
       createNode(generateNode(tweet, createContentDigest(tweet), nodeType));
     });
+  }
+
+  function createEmptyTypes(nodeType) {
+    reporter.warn(`Create empty type ${nodeType}`);
+    const typeDefs = `
+              type ${nodeType} implements Node {
+                id: String
+              }
+
+              type ${nodeType} implements Node {
+                id: String
+              }
+            `;
+    createTypes(typeDefs);
   } // Fetch data for current API call
 
 
   if (queries) {
     var client = new Twitter(credentials);
     return Promise.all(Object.keys(queries).map(async queryName => {
-      const results = await getTweet(client, queries[queryName]);
+      const nodeType = camelCase(`twitter ${queries[queryName].endpoint} ${queryName}`);
+      const results = await getTweet(client, queries[queryName], reporter);
+      nodeTypes.push(nodeType);
       return {
         queryName,
+        nodeType,
         results
       };
     }).map(async queryResults => {
       const {
         queryName,
-        results
+        results,
+        nodeType
       } = await queryResults;
-      const nodeType = camelCase(`twitter ${queryName}`);
 
       if (DEBUG === true) {
         saveResult(queryName, results);
       }
 
       if (results.length) {
-        log(`Creating Twitter nodes ${nodeType} ...`);
+        reporter.info(`Creating Twitter nodes ${nodeType} ...`);
         createNodes(results, nodeType);
       } else {
-        log(`No twitter results`);
+        reporter.warn(`No twitter results from ${queryName}`); // Create type for empty results
+        // createEmptyTypes(nodeType)
       }
     }));
   } else {
-    log(`No Twitter query found. Please check your configuration`);
+    reporter.warn(`No Twitter query found. Please check your configuration`);
   }
 
   return Promise.resolve();
