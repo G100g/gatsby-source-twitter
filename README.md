@@ -2,43 +2,160 @@
 
 Source plugin for pulling data into Gatsby from Twitter Search API.
 
+## Supported API
+
+Actually the plugin support a bunch of API endopoints
+
+- [search/tweets](https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets) - Search for tweets
+- [statuses/show](https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-statuses-show-id) - Get specific tweet
+- [statuses/lookup](https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-statuses-lookup) - Get specific multiple tweets
+- [statuses/user_timeline](https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline) - Get user timeline tweets
+- [favorites/list](https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-favorites-list) - Get liked tweets from specific user
+- [statuses/oembed](https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-statuses-oembed) - Get oembed code from tweet url
+
+Check [Twitter documentation](https://developer.twitter.com/en/docs) for more details
+
 ## How to use
+
+To start using this plugin you have to create an [App on developer](https://developer.twitter.com/en/apps) and then create a [bearer token](https://developer.twitter.com/en/docs/basics/authentication/api-reference/token) to use application authentication
+
+> Note: Only api that use application authentication will works. User authentication api are not supported
+
+Here an example of the configuration
+
 ```javascript
 // In your gatsby-config.js
 module.exports = {
   plugins: [
     {
-        resolve: `gatsby-source-twitter`,
-        options: {           
-            q: `@wesbos`,    
-            credentials: {
-                consumer_key: "INSERT_HERE_YOUR_CONSUMER_KEY",
-                consumer_secret: "INSERT_HERE_YOUR_CONSUMER_SECRET",
-                bearer_token: "INSERT_HERE_YOUR_BEARER_TOKEN"
+      resolve: `gatsby-source-twitter`,
+      options: {
+        credentials: {
+          consumer_key: "INSERT_HERE_YOUR_CONSUMER_KEY",
+          consumer_secret: "INSERT_HERE_YOUR_CONSUMER_SECRET",
+          bearer_token: "INSERT_HERE_YOUR_BEARER_TOKEN",
+        },
+        queries: {
+          nameofthequery: {
+            endpoint: "statuses/user_timeline",
+            params: {
+              screen_name: "gatsbyjs",
+              include_rts: false,
+              exclude_replies: true,
+              tweet_mode: "extended",
             },
-            tweet_mode: 'extended'
-        }
-    }
+          },
+          nameofanotherthequery: {
+            endpoint: "search/tweets",
+            params: {
+              q: "#gatsbyjs",
+              tweet_mode: "extended",
+            },
+          },
+        },
+      },
+    },
   ],
 }
 ```
 
 ## Plugin options
 
-* **q**: A search query. Reference to [Twitter Search Tweets API](https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets)
-* **count**: Number of tweet *(default 100)*
-* **credential**: You have to create an [App on Twitter](https://apps.twitter.com/) and creating a bearer token following this [instructions](https://developer.twitter.com/en/docs/basics/authentication/api-reference/token) using your consumer key and consumer secret
-* **tweet_mode**: Define how tweets are rendered. Possible values ```compat``` or ```extended``` (default: ```compat```) [More Details](https://developer.twitter.com/en/docs/tweets/tweet-updates#consumption)
-* **result_type**: Default ```mixed```, could be ```mixed```, ```recent``` or ```popular```
-* **fetchAllResults**: Fetch all pages result
+### credentials
+
+You have to create an [App on Twitter](https://apps.twitter.com/) and creating a bearer token following this [instructions](https://developer.twitter.com/en/docs/basics/authentication/api-reference/token) using your consumer key and consumer secret
+
+### queries
+
+You have to specify a object where each key is a query to Twitter API.
+
+Choose a name for the query (you will use later to retrieve data), for example `gatsbyHashtag`, but you can use whatever you want.
+
+```js
+queries: {
+  gatsbyHashtag: {
+    endpoint: "search/tweets",
+    params: {
+      q: "#gatsbyjs",
+      tweet_mode: "extended",
+    },
+  },
+},
+```
+
+- **endpoint**: The endpoint of one of the supported API.
+- **params**: The allowed params of the API specified with `endpoint` option.
+- **fetchAllResults**: Fetch all result cycling through pages. (Only for `search/tweets`)
 
 ## How to query your Tweets data using GraphQL
+
+Now that you fetch some data from Twitter, you can access it with a GraphQL query.
+
+The below `gatsbyHashtag` query will became `allTwitterGatsbyHashtag`
 
 Below is a sample query for fetching all Tweets nodes.
 
 ```graphql
-query PageQuery {
-    allTweet {
+query {
+  allTwitterGatsbyHashtag {
+    edges {
+      node {
+        full_text # or text depending by endpoint params
+        user {
+          name
+        }
+      }
+    }
+  }
+}
+```
+
+> **Warning**: `id` field is not the tweet id, but Gatbsy internal node id. Use `id_str` if you need to use the tweet id
+
+## Breaking changes
+
+3.x.x version contains some breaking changes. Here an example of how to migrate from 2.x version
+
+## Old options
+
+```js
+options: {
+  q: `@wesbos`,
+  credentials: {
+      consumer_key: "INSERT_HERE_YOUR_CONSUMER_KEY",
+      consumer_secret: "INSERT_HERE_YOUR_CONSUMER_SECRET",
+      bearer_token: "INSERT_HERE_YOUR_BEARER_TOKEN"
+  },
+  tweet_mode: 'extended'
+}
+```
+
+## New options
+
+```js
+options: {
+  credentials: {
+    consumer_key: "INSERT_HERE_YOUR_CONSUMER_KEY",
+    consumer_secret: "INSERT_HERE_YOUR_CONSUMER_SECRET",
+    bearer_token: "INSERT_HERE_YOUR_BEARER_TOKEN",
+  },
+  queries: {
+    wesbos: {
+      endpoint: "search/tweets",
+      params: {
+        q: "@wesbos",
+        tweet_mode: "extended",
+      },
+    },
+  },
+},
+```
+
+## Updated GraphQL query
+
+```
+query {
+    allTwitterWesbos {
         edges {
             node {
                 created_at
@@ -51,5 +168,3 @@ query PageQuery {
     }
 }
 ```
-
-> **Warning**: ```id``` field is not the tweet id, but Gatbsy internal node id. Use ```id_str``` if you need to use the tweet id
