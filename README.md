@@ -17,7 +17,7 @@ Check [Twitter documentation](https://developer.twitter.com/en/docs) for more de
 
 ## How to use
 
-To start using this plugin you have to create an [App on developer](https://developer.twitter.com/en/apps) and then create a [bearer token](https://developer.twitter.com/en/docs/basics/authentication/api-reference/token) to use application authentication
+To start using this plugin you have to create an [App on developer](https://developer.twitter.com/en/apps) and then create a [bearer token](https://developer.twitter.com/en/docs/basics/authentication/guides/bearer-tokens.html) to use application authentication
 
 > Note: Only api that use application authentication will works. User authentication api are not supported
 
@@ -63,7 +63,7 @@ module.exports = {
 
 ### credentials
 
-You have to create an [App on Twitter](https://apps.twitter.com/) and creating a bearer token following this [instructions](https://developer.twitter.com/en/docs/basics/authentication/api-reference/token) using your consumer key and consumer secret
+You have to create an [App on Twitter](https://apps.twitter.com/) and creating a bearer token following this [instructions](https://developer.twitter.com/en/docs/basics/authentication/guides/bearer-tokens.html) using your consumer key and consumer secret
 
 ### queries
 
