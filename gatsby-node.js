@@ -2,8 +2,6 @@
 
 const Twitter = require(`twitter`);
 
-const fs = require(`fs`);
-
 const getTweet = require(`./twitter`);
 
 const {
@@ -12,8 +10,9 @@ const {
 } = require(`./utils`);
 
 const {
-  twitterType
-} = require(`./schema`);
+  saveResult
+} = require(`./debug`); // const { twitterType } = require(`./schema`)
+
 
 const nodeTypes = [];
 const DEBUG = process.env.DEBUG === `true`;
@@ -44,7 +43,6 @@ function generateNode(tweet, contentDigest, type) {
 exports.sourceNodes = async ({
   boundActionCreators,
   createContentDigest,
-  actions,
   reporter
 }, {
   queries,
@@ -53,29 +51,24 @@ exports.sourceNodes = async ({
   const {
     createNode
   } = boundActionCreators;
-  const {
-    createTypes
-  } = actions;
 
   function createNodes(tweets, nodeType) {
     tweets.forEach(tweet => {
       createNode(generateNode(tweet, createContentDigest(tweet), nodeType));
     });
-  }
-
-  function createEmptyTypes(nodeType) {
-    reporter.warn(`Create empty type ${nodeType}`);
-    const typeDefs = `
-              type ${nodeType} implements Node {
-                id: String
-              }
-
-              type ${nodeType} implements Node {
-                id: String
-              }
-            `;
-    createTypes(typeDefs);
-  } // Fetch data for current API call
+  } // function createEmptyTypes(nodeType) {
+  //   reporter.warn(`Create empty type ${nodeType}`)
+  //   const typeDefs = `
+  //             type ${nodeType} implements Node {
+  //               id: String
+  //             }
+  //             type ${nodeType} implements Node {
+  //               id: String
+  //             }
+  //           `
+  //   createTypes(typeDefs)
+  // }
+  // Fetch data for current API call
 
 
   if (queries) {
@@ -113,13 +106,7 @@ exports.sourceNodes = async ({
   }
 
   return Promise.resolve();
-};
-
-function saveResult(queryName, results) {
-  fs.writeFileSync(`./tweets-${queryName}.json`, JSON.stringify(results, null, 4), {
-    encoding: `utf8`
-  });
-} // const isTweetType = /^twitter/
+}; // const isTweetType = /^twitter/
 // exports.setFieldsOnGraphQLNodeType = ({ type }) => {
 //   if (!isTweetType.test(type.name)) {
 //     return {}

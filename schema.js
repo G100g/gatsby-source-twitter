@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 const {
   GraphQLObjectType,
@@ -6,342 +6,342 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLFloat,
-  GraphQLList,
-} = require(`gatsby/graphql`)
+  GraphQLList
+} = require(`gatsby/graphql`);
 
-const IndiceType = new GraphQLList(GraphQLInt)
-const AspectRatioType = new GraphQLList(GraphQLInt)
-const CoordinatesType = new GraphQLList(GraphQLFloat)
+const IndiceType = new GraphQLList(GraphQLInt);
+const AspectRatioType = new GraphQLList(GraphQLInt);
+const CoordinatesType = new GraphQLList(GraphQLFloat);
 const EntityType = new GraphQLObjectType({
   name: `Entity`,
   fields: {
     text: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     indices: {
-      type: IndiceType,
-    },
-  },
-})
+      type: IndiceType
+    }
+  }
+});
 const UserMentionType = new GraphQLObjectType({
   name: `UserMention`,
   fields: {
     screen_name: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     name: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     id: {
-      type: GraphQLFloat,
+      type: GraphQLFloat
     },
     id_str: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     indices: {
-      type: IndiceType,
-    },
-  },
-})
+      type: IndiceType
+    }
+  }
+});
 const UrlType = new GraphQLObjectType({
   name: `Url`,
   fields: {
     url: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     expanded_url: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     display_url: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     indices: {
-      type: IndiceType,
-    },
-  },
-})
+      type: IndiceType
+    }
+  }
+});
 const TweetMediaSizeType = new GraphQLObjectType({
   name: `TweetMediaSize`,
   fields: {
     w: {
-      type: GraphQLInt,
+      type: GraphQLInt
     },
     h: {
-      type: GraphQLInt,
+      type: GraphQLInt
     },
     resize: {
-      type: GraphQLString,
-    },
-  },
-})
+      type: GraphQLString
+    }
+  }
+});
 const VariantType = new GraphQLObjectType({
   name: `TweetVideoInfoVariant`,
   fields: {
     bitrate: {
-      type: GraphQLInt,
+      type: GraphQLInt
     },
     content_type: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     url: {
-      type: GraphQLString,
-    },
-  },
-})
+      type: GraphQLString
+    }
+  }
+});
 const VideoInfoType = new GraphQLObjectType({
   name: `TweetVideoInfo`,
   fields: {
     aspect_ratio: {
-      type: AspectRatioType,
+      type: AspectRatioType
     },
     duration_millis: {
-      type: GraphQLInt,
+      type: GraphQLInt
     },
     // aspect_ratio: { type: AspectRatioType },
     variants: {
-      type: new GraphQLList(VariantType),
-    },
-  },
-})
+      type: new GraphQLList(VariantType)
+    }
+  }
+});
 const TweetExtendedEntitiesMediaType = new GraphQLObjectType({
   name: `TweetExtendedEntitiesMedia`,
   fields: {
     id: {
-      type: GraphQLFloat,
+      type: GraphQLFloat
     },
     id_str: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     indices: {
-      type: IndiceType,
+      type: IndiceType
     },
     media_url: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     media_url_https: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     url: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     display_url: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     expanded_url: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     type: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     sizes: {
       type: new GraphQLObjectType({
         name: `TweetMediaSizes`,
         fields: {
           thumb: {
-            type: TweetMediaSizeType,
+            type: TweetMediaSizeType
           },
           small: {
-            type: TweetMediaSizeType,
+            type: TweetMediaSizeType
           },
           medium: {
-            type: TweetMediaSizeType,
+            type: TweetMediaSizeType
           },
           large: {
-            type: TweetMediaSizeType,
-          },
-        },
-      }),
+            type: TweetMediaSizeType
+          }
+        }
+      })
     },
     video_info: {
-      type: VideoInfoType,
+      type: VideoInfoType
     },
     additional_media_info: {
       type: new GraphQLObjectType({
         name: `AdditionalMediaInfo`,
         fields: {
           monetizable: {
-            type: GraphQLBoolean,
-          },
-        },
-      }),
-    },
-  },
-})
+            type: GraphQLBoolean
+          }
+        }
+      })
+    }
+  }
+});
 const EntitiesType = new GraphQLObjectType({
   name: `TweetEntities`,
   fields: {
     media: {
-      type: new GraphQLList(TweetExtendedEntitiesMediaType),
+      type: new GraphQLList(TweetExtendedEntitiesMediaType)
     },
     hashtags: {
-      type: new GraphQLList(EntityType),
+      type: new GraphQLList(EntityType)
     },
     symbols: {
-      type: new GraphQLList(EntityType),
+      type: new GraphQLList(EntityType)
     },
     user_mentions: {
-      type: new GraphQLList(UserMentionType),
+      type: new GraphQLList(UserMentionType)
     },
     urls: {
-      type: new GraphQLList(UrlType),
-    },
-  },
-})
+      type: new GraphQLList(UrlType)
+    }
+  }
+});
 const UserEntityUrlType = new GraphQLObjectType({
   name: `UserEntityUrlType`,
   fields: {
     urls: {
-      type: new GraphQLList(UrlType),
-    },
-  },
-})
+      type: new GraphQLList(UrlType)
+    }
+  }
+});
 const UserEntitiesType = new GraphQLObjectType({
   name: `UserEntities`,
   fields: {
     url: {
-      type: UserEntityUrlType,
+      type: UserEntityUrlType
     },
     description: {
-      type: UserEntityUrlType,
-    },
-  },
-})
+      type: UserEntityUrlType
+    }
+  }
+});
 const UserType = new GraphQLObjectType({
   name: `TwitterUser`,
   fields: {
     id: {
-      type: GraphQLFloat,
+      type: GraphQLFloat
     },
     id_str: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     name: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     screen_name: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     location: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     description: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     url: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     entities: {
-      type: UserEntitiesType,
+      type: UserEntitiesType
     },
     protected: {
-      type: GraphQLBoolean,
+      type: GraphQLBoolean
     },
     followers_count: {
-      type: GraphQLInt,
+      type: GraphQLInt
     },
     friends_count: {
-      type: GraphQLInt,
+      type: GraphQLInt
     },
     listed_count: {
-      type: GraphQLInt,
+      type: GraphQLInt
     },
     created_at: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     favourites_count: {
-      type: GraphQLInt,
+      type: GraphQLInt
     },
     utc_offset: {
-      type: GraphQLInt,
+      type: GraphQLInt
     },
     time_zone: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     geo_enabled: {
-      type: GraphQLBoolean,
+      type: GraphQLBoolean
     },
     verified: {
-      type: GraphQLBoolean,
+      type: GraphQLBoolean
     },
     statuses_count: {
-      type: GraphQLInt,
+      type: GraphQLInt
     },
     lang: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     contributors_enabled: {
-      type: GraphQLBoolean,
+      type: GraphQLBoolean
     },
     is_translator: {
-      type: GraphQLBoolean,
+      type: GraphQLBoolean
     },
     is_translation_enabled: {
-      type: GraphQLBoolean,
+      type: GraphQLBoolean
     },
     profile_background_color: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     profile_background_image_url: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     profile_background_image_url_https: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     profile_background_tile: {
-      type: GraphQLBoolean,
+      type: GraphQLBoolean
     },
     profile_image_url: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     profile_image_url_https: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     profile_banner_url: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     profile_link_color: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     profile_sidebar_border_color: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     profile_sidebar_fill_color: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     profile_text_color: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     profile_use_background_image: {
-      type: GraphQLBoolean,
+      type: GraphQLBoolean
     },
     has_extended_profile: {
-      type: GraphQLBoolean,
+      type: GraphQLBoolean
     },
     default_profile: {
-      type: GraphQLBoolean,
+      type: GraphQLBoolean
     },
     default_profile_image: {
-      type: GraphQLBoolean,
+      type: GraphQLBoolean
     },
     // following: null,
     // follow_request_sent: null,
     // notifications: null,
     translator_type: {
-      type: GraphQLString,
-    },
-  },
-})
+      type: GraphQLString
+    }
+  }
+});
 const BoundingBoxType = new GraphQLObjectType({
   name: `BoundingBox`,
   fields: {
     type: {
-      type: GraphQLString,
+      type: GraphQLString
     },
     coordinates: {
-      type: new GraphQLList(new GraphQLList(CoordinatesType)),
-    },
-  },
-}) //     // [
+      type: new GraphQLList(new GraphQLList(CoordinatesType))
+    }
+  }
+}); //     // [
 //     //     [
 //     //         [
 //     //             2.2241006,
@@ -368,10 +368,10 @@ exports.twitterType = {
   //   type: GraphQLString
   // },
   text: {
-    type: GraphQLString,
+    type: GraphQLString
   },
   full_text: {
-    type: GraphQLString,
+    type: GraphQLString
   },
   // truncated: {
   //   type: GraphQLBoolean
@@ -380,7 +380,7 @@ exports.twitterType = {
   //   type: GraphQLString
   // },
   entities: {
-    type: EntitiesType,
+    type: EntitiesType
   },
   // in_reply_to_user_id_str: {
   //   type: GraphQLString
@@ -396,10 +396,10 @@ exports.twitterType = {
       name: `TweetExtendedEntities`,
       fields: {
         media: {
-          type: new GraphQLList(TweetExtendedEntitiesMediaType),
-        },
-      },
-    }),
+          type: new GraphQLList(TweetExtendedEntitiesMediaType)
+        }
+      }
+    })
   },
   // metadata: {
   //   type: GraphQLString
@@ -420,7 +420,7 @@ exports.twitterType = {
   //   type: GraphQLString
   // },
   user: {
-    type: UserType,
+    type: UserType
   },
   // geo: {
   //   type: GraphQLString
@@ -433,26 +433,26 @@ exports.twitterType = {
       name: `TweetPlace`,
       fields: {
         id: {
-          type: GraphQLString,
+          type: GraphQLString
         },
         url: {
-          type: GraphQLString,
+          type: GraphQLString
         },
         place_type: {
-          type: GraphQLString,
+          type: GraphQLString
         },
         name: {
-          type: GraphQLString,
+          type: GraphQLString
         },
         full_name: {
-          type: GraphQLString,
+          type: GraphQLString
         },
         country_code: {
-          type: GraphQLString,
+          type: GraphQLString
         },
         country: {
-          type: GraphQLString,
-        }, // contained_within: new GraphQLList(),
+          type: GraphQLString
+        } // contained_within: new GraphQLList(),
         // bounding_box: {
         //   type: BoundingBoxType
         // },
@@ -462,9 +462,10 @@ exports.twitterType = {
         //     geotagCount: { type: GraphQLInt },
         //   }
         // })}
-      },
-    }),
-  }, // is_quote_status: {
+
+      }
+    })
+  } // is_quote_status: {
   //   type: GraphQLString
   // },
   // retweet_count: {
@@ -485,4 +486,5 @@ exports.twitterType = {
   // lang: {
   //   type: GraphQLString
   // }
-}
+
+};
