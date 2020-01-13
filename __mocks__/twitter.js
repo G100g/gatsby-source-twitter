@@ -48,6 +48,10 @@ const handles = {
     this.__counterPageResults++
     return resultMock
   },
+  "lists/members": function() {
+    const resultMock = require(`./lists-members`)
+    return resultMock
+  },
 }
 
 const getHandle = (endpoint, client) => handles[endpoint].bind(client) || false

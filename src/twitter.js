@@ -10,7 +10,19 @@ module.exports = async (client, { endpoint, ...options }, reporter) => {
       console.error(e)
     }
     return []
-    // return false
+  }
+
+  const usersHandle = async function(client, endpoint, { params }) {
+    try {
+      const results = await client.get(endpoint, params)
+      return results && results.users && results.users.length
+        ? results.users
+        : []
+    } catch (e) {
+      reporter.error(`Error from "${endpoint}" - ${e.message}`)
+      console.error(e)
+    }
+    return []
   }
 
   const searchHandle = async function(
@@ -62,6 +74,7 @@ module.exports = async (client, { endpoint, ...options }, reporter) => {
     "statuses/lookup": defaultHandle,
     "statuses/oembed": defaultHandle,
     "statuses/user_timeline": defaultHandle,
+    "lists/members": usersHandle,
     "search/tweets": searchHandle,
     default: (client, endpoint) => {
       reporter.warn(`${endpoint} endpoint is not supported`)

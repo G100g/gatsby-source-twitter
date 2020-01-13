@@ -9,6 +9,7 @@ const lookupResultMock = require(`../__mocks__/lookup-result-mock`)
 const favoriteResultMock = require(`../__mocks__/favorite-result-mock`)
 const singleResultMock = require(`../__mocks__/single-result-mock`)
 const oembedResultMock = require(`../__mocks__/oembed-result-mock`)
+const listsMembersResultMock = require(`../__mocks__/lists-members`)
 
 const reporter = require(`../__mocks__/reporter`)
 
@@ -158,5 +159,22 @@ describe.only(`Twitter`, () => {
     expect(tweets).toHaveLength(1)
 
     expect(tweets[0]).toEqual(oembedResultMock)
+  })
+
+  test(`Should handle 'lists/members' endpoint`, async () => {
+    const options = {
+      endpoint: `lists/members`,
+      params: {
+        list_id: `123`,
+      },
+    }
+    var mockClient = new Twitter()
+
+    const users = await getTweet(mockClient, options, reporter)
+
+    expect(users).toHaveLength(2)
+
+    expect(users[0]).toEqual(listsMembersResultMock.users[0])
+    expect(users[1]).toEqual(listsMembersResultMock.users[1])
   })
 })
