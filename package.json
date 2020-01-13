@@ -20,7 +20,8 @@
     "lint:other": "npm run prettier -- --check",
     "format": "npm run format:code && npm run format:other",
     "format:other": "npm run prettier -- --write",
-    "format:code": "npm run lint:code -- --fix"
+    "format:code": "npm run lint:code -- --fix",
+    "release": "release-it"
   },
   "keywords": [
     "gatsby",
@@ -45,7 +46,8 @@
     "eslint-plugin-prettier": "^3.1.0",
     "gatsby": "^2.8.5",
     "jest": "^24.8.0",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "release-it": "^12.4.3"
   },
   "dependencies": {
     "twitter": "^1.7.1"
