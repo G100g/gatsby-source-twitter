@@ -1,3 +1,10 @@
+# [3.2.0-0](https://github.com/G100g/gatsby-source-twitter/compare/3.1.1-0...3.2.0-0) (2020-01-14)
+
+
+### Features
+
+* add lists/statuses endpoint ([712b7a8](https://github.com/G100g/gatsby-source-twitter/commit/712b7a88ac725fd1e4e3d4cc3ccb7388eefb9d13))
+
 ## [3.1.1-0](https://github.com/G100g/gatsby-source-twitter/compare/3.1.0-0...3.1.1-0) (2020-01-13)
 
 # 3.1.0-0 (2020-01-13)
