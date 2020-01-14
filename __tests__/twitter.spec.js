@@ -177,4 +177,19 @@ describe.only(`Twitter`, () => {
     expect(users[0]).toEqual(listsMembersResultMock.users[0])
     expect(users[1]).toEqual(listsMembersResultMock.users[1])
   })
+  test(`Should handle 'lists/statuses' endpoint`, async () => {
+    const options = {
+      endpoint: `lists/statuses`,
+      params: {
+        list_id: `123`,
+      },
+    }
+    var mockClient = new Twitter()
+
+    const tweets = await getTweet(mockClient, options, reporter)
+
+    expect(tweets).toHaveLength(1)
+
+    expect(tweets[0]).toEqual(timelineResultMock[0])
+  })
 })

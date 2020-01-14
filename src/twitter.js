@@ -74,6 +74,7 @@ module.exports = async (client, { endpoint, ...options }, reporter) => {
     "statuses/lookup": defaultHandle,
     "statuses/oembed": defaultHandle,
     "statuses/user_timeline": defaultHandle,
+    "lists/statuses": defaultHandle,
     "lists/members": usersHandle,
     "search/tweets": searchHandle,
     default: (client, endpoint) => {

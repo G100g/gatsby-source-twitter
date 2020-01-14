@@ -52,6 +52,10 @@ const handles = {
     const resultMock = require(`./lists-members`)
     return resultMock
   },
+  "lists/statuses": function() {
+    const resultMock = require(`./timeline-result-mock`)
+    return resultMock
+  },
 }
 
 const getHandle = (endpoint, client) => handles[endpoint].bind(client) || false
