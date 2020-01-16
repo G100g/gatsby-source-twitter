@@ -1,3 +1,5 @@
+# [3.2.0](https://github.com/G100g/gatsby-source-twitter/compare/3.2.0-0...3.2.0) (2020-01-16)
+
 # [3.2.0-0](https://github.com/G100g/gatsby-source-twitter/compare/3.1.1-0...3.2.0-0) (2020-01-14)
 
 
