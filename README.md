@@ -12,6 +12,8 @@ Actually the plugin support a bunch of API endopoints
 - [statuses/user_timeline](https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline) - Get user timeline tweets
 - [favorites/list](https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-favorites-list) - Get liked tweets from specific user
 - [statuses/oembed](https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-statuses-oembed) - Get oembed code from tweet url
+- [lists/members](https://developer.twitter.com/en/docs/accounts-and-users/create-manage-lists/api-reference/get-lists-members) - Returns the members of the specified list
+- [lists/statuses](https://developer.twitter.com/en/docs/accounts-and-users/create-manage-lists/api-reference/get-lists-statuses) - Returns a timeline of tweets authored by members of the specified list
 
 Check [Twitter documentation](https://developer.twitter.com/en/docs) for more details
 
@@ -58,6 +60,8 @@ module.exports = {
   ],
 }
 ```
+
+> Check [this repository](https://github.com/G100g/gatsby-source-twitter-example) for more example.
 
 ## Plugin options
 
