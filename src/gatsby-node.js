@@ -35,11 +35,18 @@ function generateNode(tweet, contentDigest, type) {
 }
 
 exports.sourceNodes = async (
-  { boundActionCreators, createContentDigest, reporter },
+  { boundActionCreators, createContentDigest, reporter, getNodes },
   { queries, credentials }
 ) => {
-  const { createNode } = boundActionCreators
-
+  const { createNode, touchNode } = boundActionCreators
+  // use cache
+  getNodes().forEach(node => {
+    if (node.internal.owner !== `gatsby-source-twitter`) {
+      return
+    }
+    // touch node for cache
+    touchNode({ nodeId: node.id })
+  })
   function createNodes(tweets, nodeType) {
     tweets.forEach(tweet => {
       createNode(generateNode(tweet, createContentDigest(tweet), nodeType))

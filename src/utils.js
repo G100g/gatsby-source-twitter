@@ -29,11 +29,11 @@ function md5(str) {
 function camelCase(txt) {
   return txt
     .replace(/([^A-Z0-9]+)/gi, ` `)
-    .replace(/\s(.)/g, function($1) {
+    .replace(/\s(.)/g, function ($1) {
       return $1.toUpperCase()
     })
     .replace(/\s/g, ``)
-    .replace(/^(.)/, function($1) {
+    .replace(/^(.)/, function ($1) {
       return $1.toLowerCase()
     })
 }
@@ -56,7 +56,32 @@ function logError(msg) {
   log(msg, errorNamespace)
 }
 
+function decrementHugeNumberBy1(n) {
+  // make sure s is a string, as we can't do math on numbers over a certain size
+  n = n.toString();
+  var allButLast = n.substr(0, n.length - 1);
+  var lastNumber = n.substr(n.length - 1);
+
+  if (lastNumber === "0") {
+    return decrementHugeNumberBy1(allButLast) + "9";
+  }
+  else {
+    var finalResult = allButLast + (parseInt(lastNumber, 10) - 1).toString();
+    return trimLeft(finalResult, "0");
+  }
+}
+
+function trimLeft(s, c) {
+  var i = 0;
+  while (i < s.length && s[i] === c) {
+    i++;
+  }
+
+  return s.substring(i);
+}
+
 module.exports = {
+  decrementHugeNumberBy1,
   sanitizeObject,
   md5,
   log,

@@ -40,6 +40,7 @@ module.exports = {
         queries: {
           nameofthequery: {
             endpoint: "statuses/user_timeline",
+            maxCount: 200, // max posts should be fetch
             params: {
               screen_name: "gatsbyjs",
               include_rts: false,
@@ -90,6 +91,7 @@ queries: {
 - **endpoint**: The endpoint of one of the supported API.
 - **params**: The allowed params of the API specified with `endpoint` option.
 - **fetchAllResults**: Fetch all result cycling through pages. (Only for `search/tweets`)
+- **maxCount**: Fetch multiple results cycling through page, default is `200`, the max value will be `3200`(from [Twitter docs](https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline)) . (Only for `statuses/user_timeline`)
 
 ## How to query your Tweets data using GraphQL
 
