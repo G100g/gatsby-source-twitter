@@ -40,7 +40,7 @@ module.exports = async (client, { endpoint, ...options }, reporter) => {
       ) {
         queryParams = {
           ...params,
-          max_id: decrementHugeNumberBy1(lastResults[lastResults.length - 1].id)
+          max_id: decrementHugeNumberBy1(lastResults[lastResults.length - 1].id_str)
         }
 
       } else {
