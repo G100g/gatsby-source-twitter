@@ -1,5 +1,7 @@
 # gatsby-source-twitter
 
+![Check code](https://github.com/G100g/gatsby-source-twitter/workflows/Check%20code/badge.svg)
+
 Source plugin for pulling data into Gatsby from Twitter Search API.
 
 ## Supported API
