@@ -9,7 +9,7 @@ const {
 
 const IndiceType = new GraphQLList(GraphQLInt)
 const AspectRatioType = new GraphQLList(GraphQLInt)
-const CoordinatesType = new GraphQLList(GraphQLFloat)
+// const CoordinatesType = new GraphQLList(GraphQLFloat)
 
 const EntityType = new GraphQLObjectType({
   name: `Entity`,
@@ -195,15 +195,15 @@ const UserType = new GraphQLObjectType({
   },
 })
 
-const BoundingBoxType = new GraphQLObjectType({
-  name: `BoundingBox`,
-  fields: {
-    type: { type: GraphQLString },
-    coordinates: {
-      type: new GraphQLList(new GraphQLList(CoordinatesType)),
-    },
-  },
-})
+// const BoundingBoxType = new GraphQLObjectType({
+//   name: `BoundingBox`,
+//   fields: {
+//     type: { type: GraphQLString },
+//     coordinates: {
+//       type: new GraphQLList(new GraphQLList(CoordinatesType)),
+//     },
+//   },
+// })
 
 //     // [
 //     //     [

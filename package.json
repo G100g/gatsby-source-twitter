@@ -16,11 +16,12 @@
     "test:update": "jest --updateSnapshot",
     "test:watch": "jest --watch",
     "lint": "npm-run-all --continue-on-error -p lint:code lint:other",
-    "lint:code": "eslint --ignore-path .gitignore --ignore-path .prettierignore --ext .js .",
+    "lint:code": "eslint --ignore-path .gitignore --ignore-path .prettierignore --ext .js src",
     "lint:other": "npm run prettier -- --check",
     "format": "npm run format:code && npm run format:other",
     "format:other": "npm run prettier -- --write",
     "format:code": "npm run lint:code -- --fix",
+    "prettier": "prettier \"./src/**/*.js\"",
     "release": "release-it"
   },
   "keywords": [
@@ -47,8 +48,9 @@
     "eslint-plugin-prettier": "^3.1.0",
     "gatsby": "^2.18.23",
     "jest": "^24.8.0",
-    "prettier": "^1.18.2",
-    "release-it": "^12.4.3"
+    "prettier": "^1.19.1",
+    "release-it": "^12.4.3",
+    "npm-run-all": "^4.1.5"
   },
   "dependencies": {
     "twitter": "^1.7.1"
