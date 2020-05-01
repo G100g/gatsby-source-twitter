@@ -1,7 +1,7 @@
 const querystring = require(`querystring`)
-const { decrementHugeNumberBy1 } = require('./utils')
+const { decrementHugeNumberBy1 } = require(`./utils`)
 module.exports = async (client, { endpoint, ...options }, reporter) => {
-  const defaultHandle = async function (client, endpoint, { params }) {
+  const defaultHandle = async function(client, endpoint, { params }) {
     try {
       const results = await client.get(endpoint, params)
       return results.length ? results : [results]
@@ -11,7 +11,7 @@ module.exports = async (client, { endpoint, ...options }, reporter) => {
     }
     return []
   }
-  const userTimelineHandle = async function (
+  const userTimelineHandle = async function(
     client,
     endpoint,
     { maxCount = 200, params }
@@ -34,22 +34,23 @@ module.exports = async (client, { endpoint, ...options }, reporter) => {
       }
 
       if (
-
-        lastResults.length && lastResults.length >= queryParams.count &&
+        lastResults.length &&
+        lastResults.length >= queryParams.count &&
         maxCount > results.length
       ) {
         queryParams = {
           ...params,
-          max_id: decrementHugeNumberBy1(lastResults[lastResults.length - 1].id_str)
+          max_id: decrementHugeNumberBy1(
+            lastResults[lastResults.length - 1].id_str
+          ),
         }
-
       } else {
         fetchNextResults = false
       }
     }
     return results.slice(0, maxCount)
   }
-  const usersHandle = async function (client, endpoint, { params }) {
+  const usersHandle = async function(client, endpoint, { params }) {
     try {
       const results = await client.get(endpoint, params)
       return results && results.users && results.users.length
@@ -62,7 +63,7 @@ module.exports = async (client, { endpoint, ...options }, reporter) => {
     return []
   }
 
-  const searchHandle = async function (
+  const searchHandle = async function(
     client,
     endpoint,
     { fetchAllResults = false, params }
