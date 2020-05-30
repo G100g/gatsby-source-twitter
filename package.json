@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-twitter",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "Fetch data from Twitter API",
   "main": "index.js",
   "repository": {
