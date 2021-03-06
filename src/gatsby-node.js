@@ -35,10 +35,10 @@ function generateNode(tweet, contentDigest, type) {
 }
 
 exports.sourceNodes = async (
-  { boundActionCreators, createContentDigest, reporter },
+  { actions, createContentDigest, reporter },
   { queries, credentials }
 ) => {
-  const { createNode } = boundActionCreators
+  const { createNode } = actions
 
   function createNodes(tweets, nodeType) {
     tweets.forEach(tweet => {
