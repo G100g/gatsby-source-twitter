@@ -10,7 +10,7 @@ const { sourceNodes: source } = require(`../src/gatsby-node`)
 const mockGatsbyApi = () => {
   const GatsbyApi = {
     reporter,
-    boundActionCreators: {
+    actions: {
       nodeObjects: [],
       createNode(nodeObject) {
         this.nodeObjects.push(nodeObject)
@@ -19,8 +19,8 @@ const mockGatsbyApi = () => {
     createContentDigest: jest.fn(x => md5(JSON.stringify(x))),
   }
 
-  GatsbyApi.boundActionCreators.createNode = GatsbyApi.boundActionCreators.createNode.bind(
-    GatsbyApi.boundActionCreators
+  GatsbyApi.actions.createNode = GatsbyApi.actions.createNode.bind(
+    GatsbyApi.actions
   )
 
   return GatsbyApi
@@ -51,12 +51,12 @@ describe(`Source`, () => {
       const contentDigest = md5(JSON.stringify(item))
       const id = md5(item.id_str)
 
-      expect(mock.boundActionCreators.nodeObjects.length).toBe(4)
+      expect(mock.actions.nodeObjects.length).toBe(4)
 
       // Unabel to recreate the same hash
-      mock.boundActionCreators.nodeObjects[0].internal.contentDigest = contentDigest
+      mock.actions.nodeObjects[0].internal.contentDigest = contentDigest
 
-      expect(mock.boundActionCreators.nodeObjects[0]).toEqual(
+      expect(mock.actions.nodeObjects[0]).toEqual(
         Object.assign({}, item, {
           id,
           children: [],

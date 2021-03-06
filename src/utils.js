@@ -3,7 +3,7 @@ const crypto = require(`crypto`)
 function sanitizeObject(obj) {
   if (!obj) return ``
 
-  Object.keys(obj).forEach(key => {
+  Object.keys(obj).forEach((key) => {
     if (obj[key] === null || obj[key] === undefined) {
       obj[key] = ``
     } else if (key === `id`) {
@@ -20,20 +20,17 @@ function sanitizeObject(obj) {
 }
 
 function md5(str) {
-  return crypto
-    .createHash(`md5`)
-    .update(str)
-    .digest(`hex`)
+  return crypto.createHash(`md5`).update(str).digest(`hex`)
 }
 
 function camelCase(txt) {
   return txt
     .replace(/([^A-Z0-9]+)/gi, ` `)
-    .replace(/\s(.)/g, function($1) {
+    .replace(/\s(.)/g, function ($1) {
       return $1.toUpperCase()
     })
     .replace(/\s/g, ``)
-    .replace(/^(.)/, function($1) {
+    .replace(/^(.)/, function ($1) {
       return $1.toLowerCase()
     })
 }
