@@ -35,13 +35,13 @@ function generateNode(tweet, contentDigest, type) {
 }
 
 exports.sourceNodes = async (
-  { boundActionCreators, createContentDigest, reporter },
+  { actions, createContentDigest, reporter },
   { queries, credentials }
 ) => {
-  const { createNode } = boundActionCreators
+  const { createNode } = actions
 
   function createNodes(tweets, nodeType) {
-    tweets.forEach(tweet => {
+    tweets.forEach((tweet) => {
       createNode(generateNode(tweet, createContentDigest(tweet), nodeType))
     })
   }
@@ -63,11 +63,11 @@ exports.sourceNodes = async (
 
   // Fetch data for current API call
   if (queries) {
-    var client = new Twitter(credentials)
+    const client = new Twitter(credentials)
 
     return Promise.all(
       Object.keys(queries)
-        .map(async queryName => {
+        .map(async (queryName) => {
           const nodeType = camelCase(
             `twitter ${queries[queryName].endpoint} ${queryName}`
           )
@@ -80,7 +80,7 @@ exports.sourceNodes = async (
             results,
           }
         })
-        .map(async queryResults => {
+        .map(async (queryResults) => {
           const { queryName, results, nodeType } = await queryResults
 
           if (DEBUG === true) {

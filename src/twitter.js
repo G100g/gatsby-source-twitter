@@ -1,7 +1,7 @@
 const querystring = require(`querystring`)
 
 module.exports = async (client, { endpoint, ...options }, reporter) => {
-  const defaultHandle = async function(client, endpoint, { params }) {
+  const defaultHandle = async function (client, endpoint, { params }) {
     try {
       const results = await client.get(endpoint, params)
       return results.length ? results : [results]
@@ -12,7 +12,7 @@ module.exports = async (client, { endpoint, ...options }, reporter) => {
     return []
   }
 
-  const usersHandle = async function(client, endpoint, { params }) {
+  const usersHandle = async function (client, endpoint, { params }) {
     try {
       const results = await client.get(endpoint, params)
       return results && results.users && results.users.length
@@ -25,7 +25,7 @@ module.exports = async (client, { endpoint, ...options }, reporter) => {
     return []
   }
 
-  const searchHandle = async function(
+  const searchHandle = async function (
     client,
     endpoint,
     { fetchAllResults = false, params }
@@ -83,7 +83,7 @@ module.exports = async (client, { endpoint, ...options }, reporter) => {
     },
   }
 
-  const getHandle = endpoint => handles[endpoint] || handles.default
+  const getHandle = (endpoint) => handles[endpoint] || handles.default
 
   reporter.info(`Fetching Twitter ${endpoint} content...`)
 

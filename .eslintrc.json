@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "extends": ["google", "eslint:recommended", "prettier"],
   "plugins": ["prettier", "filenames"],
   "parserOptions": {
