@@ -1,3 +1,10 @@
+# [4.0.0](https://github.com/G100g/gatsby-source-twitter/compare/3.2.2...4.0.0) (2021-03-06)
+
+
+### Features
+
+* update for Gatsby v3 ([921b58b](https://github.com/G100g/gatsby-source-twitter/commit/921b58bca6f0d18ee86eec1c1f499c0212d63f21))
+
 ## [3.2.2](https://github.com/G100g/gatsby-source-twitter/compare/3.2.1...3.2.2) (2020-05-30)
 
 ## [3.2.1](https://github.com/G100g/gatsby-source-twitter/compare/3.2.0...3.2.1) (2020-01-16)
