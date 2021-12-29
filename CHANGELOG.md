@@ -1,3 +1,5 @@
+## [4.0.1](https://github.com/G100g/gatsby-source-twitter/compare/4.0.1-rc.0...4.0.1) (2021-12-29)
+
 ## [4.0.1-rc.0](https://github.com/G100g/gatsby-source-twitter/compare/4.0.0...4.0.1-rc.0) (2021-12-29)
 
 
