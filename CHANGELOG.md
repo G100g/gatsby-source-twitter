@@ -1,3 +1,10 @@
+## [4.0.1-rc.0](https://github.com/G100g/gatsby-source-twitter/compare/4.0.0...4.0.1-rc.0) (2021-12-29)
+
+
+### Features
+
+* bump for gatsby 4.x release ([2830d83](https://github.com/G100g/gatsby-source-twitter/commit/2830d83a09119ee05873bd5d07dc62af1d14cbb2))
+
 # [4.0.0](https://github.com/G100g/gatsby-source-twitter/compare/3.2.2...4.0.0) (2021-03-06)
 
 
